@@ -1,6 +1,5 @@
 import React from 'react'
 import {Tilt} from 'react-tilt';
-// import Tilt from 'react-parallax-tilt';
 import { motion } from 'framer-motion';
 
 import { styles } from '../styles';
@@ -43,10 +42,10 @@ const About = () => {
     variants={fadeIn("", "", 0.1, 1)}
     className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'>
       I am a skilled software developer with experience in Typescript and JavaScript, and expertise in frameworks like React, Node.js and React Native.
-      I'm a quick learner, highly motivated and creative individual. I work collaborate closely with clients to create efficient, scalable, and user-friendly solutions that solve real world challenges. Lets work together to bring your ideas to life.
+      I'm a quick learner, highly motivated and creative individual. I collaborate closely with clients and teams to create efficient, scalable, and user-friendly solutions that solve real world challenges. Lets work together to bring your ideas to life.
     </motion.p>
 
-    <div className='mt-20 flex flex-wrap gap-10'>
+    <div className=" mt-20 flex flex-1 flex-wrap gap-10">
       {services.map((services, index) => (<ServiceCard key={services.title} index={index} {...services} />
       ))}
     </div>

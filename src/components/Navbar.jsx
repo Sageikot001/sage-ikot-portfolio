@@ -21,9 +21,10 @@ const Navbar = () => {
             window.scrollTo(0, 0);
           }}
         >
-          <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
-          <p className="text-white text-18px font-bold cursor-pointer">
-            Sage <span className="sm:block hidden">Ikot</span>
+          <p className="text-white text-18px font-bold cursor-pointer flex justify-center items-center">
+            S
+            <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
+            GE <span className="sm:block hidden">_Ikot</span>
           </p>
         </Link>
         <ul className="list-none hidden sm:flex flex-row gap-10">
