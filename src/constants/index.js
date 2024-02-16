@@ -13,6 +13,7 @@ import {
   nodejs,
   mongodb,
   git,
+  styledcomponent,
   figma,
   docker,
   meta,
@@ -21,6 +22,11 @@ import {
   shopify,
   dashboard,
   jobit,
+  zambia,
+  TBC,
+  swing,
+  Blink02,
+  blinklogo,
   tripguide,
   threejs,
 } from "../assets";
@@ -89,13 +95,17 @@ const technologies = [
     icon: tailwind,
   },
   {
-    name: "Node JS",
-    icon: nodejs,
+    name: "Styled Component",
+    icon: styledcomponent,
   },
-  {
-    name: "MongoDB",
-    icon: mongodb,
-  },
+  // {
+  //   name: "Node JS",
+  //   icon: nodejs,
+  // },
+  // {
+  //   name: "MongoDB",
+  //   icon: mongodb,
+  // },
   {
     name: "Three JS",
     icon: threejs,
@@ -108,18 +118,18 @@ const technologies = [
     name: "figma",
     icon: figma,
   },
-  {
-    name: "docker",
-    icon: docker,
-  },
+  // {
+  //   name: "docker",
+  //   icon: docker,
+  // },
 ];
 
 const experiences = [
   {
     title: "Typescript React.js Developer",
     company_name: "Blink",
-    icon: starbucks,
-    iconBg: "#383E56",
+    icon: blinklogo,
+    iconBg: "#E6DEDD",
     date: "March 2020 - April 2021",
     points: [
       "Developing and maintaining web applications using React.js and other related technologies.",
@@ -131,8 +141,8 @@ const experiences = [
   {
     title: "React Native Developer",
     company_name: "Migremit",
-    icon: tesla,
-    iconBg: "#E6DEDD",
+    icon: zambia,
+    iconBg: "#383E56",
     date: "Jan 2021 - Feb 2022",
     points: [
       "Crafted and maintained a mobile applications, leveraging React Native and other relevant technologies.",
@@ -145,8 +155,8 @@ const experiences = [
   {
     title: "Web Developer",
     company_name: "The Branding Champs",
-    icon: shopify,
-    iconBg: "#383E56",
+    icon: TBC,
+    iconBg: "#E6DEDD",
     date: "Jan 2022 - Jan 2023",
     points: [
       "Develop and maintain complex web applications using React.js and state-of-the-art libraries.",
@@ -220,37 +230,37 @@ const projects = [
     source_code_link: "https://github.com/Sageikot001/Initial-Dashboard-Commit.git",
   },
   {
-    name: "Job IT",
+    name: "Blink",
     description:
-      "Web application that enables users to search for job openings, view estimated salary ranges for positions, and locate available jobs based on their current location.",
+      "A data management and processing software used to view and manage client and employees activities as well as daily cost of operations, average delivery time per employees and analysis of overall performance of the business and affiliated businesses in a more user friendly interface.",
     tags: [
       {
-        name: "react",
+        name: "Typescript",
         color: "blue-text-gradient",
       },
       {
-        name: "restapi",
+        name: "styled Component",
         color: "green-text-gradient",
       },
       {
-        name: "scss",
+        name: "MaterialUI",
         color: "pink-text-gradient",
       },
     ],
-    image: jobit,
-    source_code_link: "https://github.com/",
+    image: Blink02,
+    source_code_link: "https://github.com/jacquesikot/blinck-data-manager.git",
   },
   {
-    name: "Trip Guide",
+    name: "Swing",
     description:
       "A comprehensive travel booking platform that allows users to book flights, hotels, and rental cars, and offers curated recommendations for popular destinations.",
     tags: [
       {
-        name: "nextjs",
+        name: "Typescript",
         color: "blue-text-gradient",
       },
       {
-        name: "supabase",
+        name: "Styled Component",
         color: "green-text-gradient",
       },
       {
@@ -258,8 +268,8 @@ const projects = [
         color: "pink-text-gradient",
       },
     ],
-    image: tripguide,
-    source_code_link: "https://github.com/",
+    image: swing,
+    source_code_link: "https://github.com/Sageikot001/swing-app.git",
   },
 ];
 
