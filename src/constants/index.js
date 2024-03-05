@@ -24,7 +24,7 @@ import {
   jobit,
   zambia,
   TBC,
-  swing,
+  cinematrix,
   Blink02,
   blinklogo,
   tripguide,
@@ -251,25 +251,21 @@ const projects = [
     source_code_link: "https://github.com/jacquesikot/blinck-data-manager.git",
   },
   {
-    name: "Swing",
+    name: "Cinematrix",
     description:
-      "A comprehensive travel booking platform that allows users to book flights, hotels, and rental cars, and offers curated recommendations for popular destinations.",
+      "Cinematrix offers a diverse library of films for every taste, ensuring endless entertainment. With lightning-fast downloads and seamless streaming, enjoy your favorite movies anytime, anywhere. Whether you're a cinephile or casual viewer, Cinematrix caters to all.",
     tags: [
       {
-        name: "Typescript",
+        name: "React.JS",
         color: "blue-text-gradient",
-      },
-      {
-        name: "Styled Component",
-        color: "green-text-gradient",
       },
       {
         name: "css",
         color: "pink-text-gradient",
       },
     ],
-    image: swing,
-    source_code_link: "https://github.com/Sageikot001/swing-app.git",
+    image: cinematrix,
+    source_code_link: "https://github.com/Sageikot001/Cinematrix.git",
   },
 ];
 

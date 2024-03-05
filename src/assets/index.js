@@ -33,7 +33,7 @@ import tesla from "./company/tesla.png";
 import dashboard from "./dashboard.png";
 import jobit from "./jobit.png";
 import Blink02 from "./Blink02.png";
-import swing from "./swing.png";
+import cinematrix from "./cinematrix.png";
 import tripguide from "./tripguide.png";
 
 export {
@@ -69,6 +69,6 @@ export {
   dashboard,
   jobit,
   Blink02,
-  swing,
+  cinematrix,
   tripguide,
 };
