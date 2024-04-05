@@ -14,9 +14,10 @@ const ProjectCard = ({
   tags,
   image,
   source_code_link,
+  live_demo_link,
 }) => {
   return (
-    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
+    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)} onClick={(e) => window.open(live_demo_link, "_blank")}>
       <Tilt
         options={{
           max: 45,

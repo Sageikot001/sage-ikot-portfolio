@@ -24,6 +24,7 @@ import {
   jobit,
   zambia,
   TBC,
+  friendlink,
   cinematrix,
   Blink02,
   blinklogo,
@@ -211,7 +212,7 @@ const projects = [
   {
     name: "Pixel Ecommerce",
     description:
-      "Effortlessly manage your ecommerce business with our platform. Seamlessly handle customer interactions and employee tasks, all in one convenient dashboard. See how your business is doing through various charts",
+      "Effortlessly manage your ecommerce business with our platform. Seamlessly handle customer interactions and employee tasks, all in one convenient dashboard. See how your business is doing through various charts. Truth is Pixel is just a beta version to show what your ecommerce store could look like. ",
     tags: [
       {
         name: "react",
@@ -228,11 +229,12 @@ const projects = [
     ],
     image: dashboard,
     source_code_link: "https://github.com/Sageikot001/Initial-Dashboard-Commit.git",
+    live_demo_link: "https://pixel-ten-alpha.vercel.app/"
   },
   {
     name: "Blink",
     description:
-      "A data management and processing software used to view and manage client and employees activities as well as daily cost of operations, average delivery time per employees and analysis of overall performance of the business and affiliated businesses in a more user friendly interface.",
+    "A data management and processing software used to view and manage client and employees activities as well as daily cost of operations, average delivery time per employees and analysis of overall performance of the business and affiliated businesses in a more user friendly interface.",
     tags: [
       {
         name: "Typescript",
@@ -249,11 +251,12 @@ const projects = [
     ],
     image: Blink02,
     source_code_link: "https://github.com/jacquesikot/blinck-data-manager.git",
+    live_demo_link: "https://github.com/jacquesikot/blinck-data-manager.git"
   },
   {
     name: "Cinematrix",
     description:
-      "Cinematrix offers a diverse library of films for every taste, ensuring endless entertainment. With lightning-fast downloads and seamless streaming, enjoy your favorite movies anytime, anywhere. Whether you're a cinephile or casual viewer, Cinematrix caters to all.",
+    "Cinematrix offers a diverse library of films for every taste, ensuring endless entertainment. With lightning-fast downloads and seamless streaming, enjoy your favorite movies anytime, anywhere. Whether you're a cinephile or casual viewer, Cinematrix caters to all.",
     tags: [
       {
         name: "React.JS",
@@ -266,6 +269,37 @@ const projects = [
     ],
     image: cinematrix,
     source_code_link: "https://github.com/Sageikot001/Cinematrix.git",
+    live_demo_link: "https://cinematrix-eta.vercel.app/"
+  },
+  {
+    name: "Friendlink",
+    description:
+    "Friendlink is a social media application in the making with a diverse array of features both for users. With several pages housing several functionalities such as the ability to make posts, edit posts, like and even save posts. With more features currently in build such as your own personal Ai chatbot, etc. This is going to be an epic one for now, you can access a beta version through here.",
+    tags: [
+      {
+        name: "React.JS",
+        color: "green-text-gradient",
+      },
+      {
+        name: "Typescript",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "Tanstack Query",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "Tailwindcss",
+        color: "yellow-text-gradient",
+      },
+      {
+        name: "appwrite",
+        color: "pink-text-gradient"
+      }
+    ],
+    image: friendlink,
+    source_code_link: "https://github.com/Sageikot001/Cinematrix.git",
+    live_demo_link: "https://friendlink-flax.vercel.app/"
   },
 ];
 

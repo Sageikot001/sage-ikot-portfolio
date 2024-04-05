@@ -34,6 +34,7 @@ import dashboard from "./dashboard.png";
 import jobit from "./jobit.png";
 import Blink02 from "./Blink02.png";
 import cinematrix from "./cinematrix.png";
+import friendlink from "./friendlink.png"
 import tripguide from "./tripguide.png";
 
 export {
@@ -69,6 +70,7 @@ export {
   dashboard,
   jobit,
   Blink02,
+  friendlink,
   cinematrix,
   tripguide,
 };
