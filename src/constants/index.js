@@ -49,8 +49,8 @@ export const navLinks = [
     path: "/#contact"
   },
   {
-    id: "add-project",
-    title: "Add Project",
+    // id: "add-project",
+    // title: "Add Project",
     path: "/add-project"
   }
 ];
