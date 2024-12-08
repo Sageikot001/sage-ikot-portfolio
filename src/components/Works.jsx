@@ -6,8 +6,15 @@ import { styles } from "../styles";
 import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
 import { projects as defaultProjects } from "../constants";
-import { dbOperations } from "../utils/db";
+import { projectsDB } from "../utils/appwrite";
 import { fadeIn, textVariant } from "../utils/motion";
+
+const tagColors = [
+  'blue-text-gradient',
+  'green-text-gradient',
+  'pink-text-gradient',
+  'yellow-text-gradient'
+];
 
 const ProjectCard = ({
   index,
@@ -20,42 +27,14 @@ const ProjectCard = ({
 }) => {
   const [imageError, setImageError] = useState(false);
 
-  // Function to convert Google Drive link to viewable image URL
-  const getImageUrl = (url) => {
-    if (!url) return '';
-    
-    console.log('Original URL:', url);
-    
-    // Check if it's a Google Drive link
-    if (url.includes('drive.google.com')) {
-      // Extract file ID from various Google Drive URL formats
-      let fileId = '';
-      
-      if (url.includes('/file/d/')) {
-        fileId = url.split('/file/d/')[1].split('/')[0];
-      } else if (url.includes('id=')) {
-        fileId = url.split('id=')[1].split('&')[0];
-      }
-      
-      if (fileId) {
-        // Try the alternative export format
-        const transformedUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
-        console.log('Transformed URL:', transformedUrl);
-        return transformedUrl;
-      }
-    }
-    
-    return url;
-  };
-
-  const handleImageError = (e) => {
-    console.error('Image failed to load:', e);
-    console.log('Failed image URL:', e.target.src);
-    setImageError(true);
-  };
-
   return (
-    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)} onClick={() => live_demo_link && window.open(live_demo_link, "_blank")}>
+    <motion.div 
+      variants={fadeIn("up", "spring", index * 0.5, 0.75)}
+      initial="show"
+      animate="show"
+      viewport={{ once: true }}
+      onClick={() => live_demo_link && window.open(live_demo_link, "_blank")}
+    >
       <Tilt
         options={{
           max: 45,
@@ -67,11 +46,10 @@ const ProjectCard = ({
         <div className="relative w-full h-[230px]">
           {!imageError ? (
             <img
-              src={getImageUrl(image)}
+              src={image}
               alt={name}
               className="w-full h-full object-cover rounded-2xl"
-              onError={handleImageError}
-              crossOrigin="anonymous"
+              onError={() => setImageError(true)}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-tertiary rounded-2xl">
@@ -81,10 +59,7 @@ const ProjectCard = ({
 
           <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
             <div
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(source_code_link, "_blank");
-              }}
+              onClick={() => window.open(source_code_link, "_blank")}
               className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
             >
               <img
@@ -102,9 +77,12 @@ const ProjectCard = ({
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <p key={tag.name} className={`text-[14px] ${tag.color}`}>
-              #{tag.name}
+          {tags.map((tag, idx) => (
+            <p
+              key={`${name}-${idx}`}
+              className={`text-[14px] ${tagColors[idx % tagColors.length]}`}
+            >
+              #{typeof tag === 'object' ? tag.name : tag}
             </p>
           ))}
         </div>
@@ -120,8 +98,7 @@ const Works = () => {
   const loadProjects = async () => {
     setIsLoading(true)
     try {
-      const savedProjects = await dbOperations.getAll()
-      console.log('Loaded projects from DB:', savedProjects)
+      const savedProjects = await projectsDB.getAll()
       setAllProjects([...defaultProjects, ...savedProjects])
     } catch (error) {
       console.error('Error loading projects:', error)
@@ -133,7 +110,6 @@ const Works = () => {
   useEffect(() => {
     loadProjects()
     
-    // Create a custom event listener for project updates
     const handleProjectUpdate = () => {
       console.log('Project update event received')
       loadProjects()
@@ -147,11 +123,13 @@ const Works = () => {
     return <div>Loading projects...</div>
   }
 
-  console.log('Current allProjects state:', allProjects)
-
   return (
     <>
-      <motion.div variants={textVariant()}>
+      <motion.div 
+        variants={textVariant()}
+        initial="show"
+        animate="show"
+      >
         <p className={styles.sectionSubText}>My work</p>
         <h2 className={styles.sectionHeadText}>Projects.</h2>
       </motion.div>
@@ -159,6 +137,8 @@ const Works = () => {
       <div className="w-full flex">
         <motion.p
           variants={fadeIn("", "", 0.1, 1)}
+          initial="show"
+          animate="show"
           className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]"
         >
           Following projects showcases my skills and experience through

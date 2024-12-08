@@ -3,11 +3,19 @@ import { Tilt } from "react-tilt"
 import { motion } from 'framer-motion'
 import { github } from "../assets"
 import { fadeIn, textVariant } from '../utils/motion'
-import { dbOperations } from '../utils/db'
+import { projectsDB } from '../utils/appwrite'
 
 const ProjectCard = ({ project, onEdit, onDelete }) => {
   const { index, name, description, tags, image, source_code_link, live_demo_link } = project
   const [imageError, setImageError] = useState(false)
+
+  // Define tag colors based on your selection options
+  const tagColors = [
+    'blue-text-gradient',
+    'green-text-gradient',
+    'pink-text-gradient',
+    'yellow-text-gradient'
+  ];
 
   // Function to convert Google Drive link to viewable image URL
   const getImageUrl = (url) => {
@@ -76,11 +84,18 @@ const ProjectCard = ({ project, onEdit, onDelete }) => {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <p key={tag.name} className={`text-[14px] ${tag.color}`}>
-              #{tag.name}
-            </p>
-          ))}
+          {Array.isArray(tags) && tags.map((tag, idx) => {
+            // Ensure we're working with a string value for the tag
+            const tagName = typeof tag === 'object' ? tag.name : tag;
+            return (
+              <p 
+                key={`${tagName}-${idx}`} 
+                className={`text-[14px] ${tagColors[idx % tagColors.length]}`}
+              >
+                #{tagName}
+              </p>
+            );
+          })}
         </div>
 
         <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -91,7 +106,7 @@ const ProjectCard = ({ project, onEdit, onDelete }) => {
             Edit
           </button>
           <button
-            onClick={() => onDelete(project.id)}
+            onClick={() => onDelete(project.$id)}
             className="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
           >
             Delete
@@ -122,7 +137,7 @@ export default function ManageProjects() {
 
   const loadProjects = async () => {
     try {
-      const savedProjects = await dbOperations.getAll()
+      const savedProjects = await projectsDB.getAll()
       setProjects(savedProjects)
     } catch (error) {
       console.error('Error loading projects:', error)
@@ -134,7 +149,7 @@ export default function ManageProjects() {
   const handleDelete = async (projectId) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
       try {
-        await dbOperations.delete(projectId)
+        await projectsDB.delete(projectId)
         loadProjects()
       } catch (error) {
         console.error('Error deleting project:', error)
@@ -144,13 +159,20 @@ export default function ManageProjects() {
   }
 
   const handleEdit = (project) => {
-    setEditingProject({ ...project })
+    setEditingProject({
+      ...project,
+      id: project.$id,
+      tags: project.tags.map(tag => ({
+        name: tag.name || tag,
+        color: tag.color || 'blue-text-gradient'
+      }))
+    });
   }
 
   const handleUpdate = async (e) => {
     e.preventDefault()
     try {
-      await dbOperations.update(editingProject.id, editingProject)
+      await projectsDB.update(editingProject.$id, editingProject)
       setEditingProject(null)
       loadProjects()
       alert('Project updated successfully!')
@@ -195,18 +217,34 @@ export default function ManageProjects() {
           </div>
 
           <div>
-            <label className="block mb-2">Image URL *</label>
+            <label className="block mb-2">Project Image</label>
             <input
-              type="url"
-              value={editingProject.image}
-              onChange={(e) => setEditingProject({
-                ...editingProject,
-                image: e.target.value
-              })}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setEditingProject({
+                    ...editingProject,
+                    image: file
+                  });
+                }
+              }}
               className="w-full p-2 border rounded bg-tertiary"
-              required
-              placeholder="https://..."
             />
+            
+            {editingProject.image && (
+              <div className="mt-2">
+                <img 
+                  src={editingProject.image instanceof File 
+                    ? URL.createObjectURL(editingProject.image)
+                    : editingProject.image
+                  } 
+                  alt="Preview" 
+                  className="w-full max-h-64 object-contain"
+                />
+              </div>
+            )}
           </div>
 
           <div>
@@ -246,12 +284,15 @@ export default function ManageProjects() {
                   type="text"
                   value={tag.name}
                   onChange={(e) => {
-                    const newTags = [...editingProject.tags]
-                    newTags[index].name = e.target.value
+                    const newTags = [...editingProject.tags];
+                    newTags[index] = {
+                      ...newTags[index],
+                      name: e.target.value
+                    };
                     setEditingProject({
                       ...editingProject,
                       tags: newTags
-                    })
+                    });
                   }}
                   className="w-full p-2 border rounded bg-tertiary"
                   placeholder="Tag name"
@@ -259,12 +300,15 @@ export default function ManageProjects() {
                 <select
                   value={tag.color}
                   onChange={(e) => {
-                    const newTags = [...editingProject.tags]
-                    newTags[index].color = e.target.value
+                    const newTags = [...editingProject.tags];
+                    newTags[index] = {
+                      ...newTags[index],
+                      color: e.target.value
+                    };
                     setEditingProject({
                       ...editingProject,
                       tags: newTags
-                    })
+                    });
                   }}
                   className="p-2 border rounded bg-tertiary"
                 >
