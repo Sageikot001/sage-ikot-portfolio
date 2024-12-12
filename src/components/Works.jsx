@@ -99,7 +99,7 @@ const Works = () => {
     setIsLoading(true)
     try {
       const savedProjects = await projectsDB.getAll()
-      setAllProjects([...defaultProjects, ...savedProjects])
+      setAllProjects([...savedProjects, ...defaultProjects])
     } catch (error) {
       console.error('Error loading projects:', error)
     } finally {
