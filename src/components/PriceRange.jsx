@@ -36,23 +36,23 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
         </button>
       )}
     </motion.div>
-  );
-};
+  )
+}
 
 const ServiceSection = ({ title, plans }) => (
-  <div className="flex flex-col items-center">
-    <div className="w-full bg-tertiary/30 backdrop-blur-sm py-3 sm:py-4 px-4 mb-4 sm:mb-8 rounded-lg mx-auto">
+  <div className="w-full">
+    <div className="bg-tertiary/30 backdrop-blur-sm py-3 px-4 rounded-lg mb-4">
       <h3 className="text-white font-bold text-[20px] sm:text-[28px] text-center">
         {title}
       </h3>
     </div>
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 w-full">
+    <div className="mt-4 flex flex-col items-center gap-4">
       {plans.map((plan, index) => (
         <PriceCard key={index} {...plan} />
       ))}
     </div>
   </div>
-);
+)
 
 const PriceRange = () => {
   const services = {
@@ -177,7 +177,7 @@ const PriceRange = () => {
     <div className="pb-[120px] sm:pb-0">
       <motion.div 
         variants={slideIn('down', 'tween', 0.2, 1)}
-        className="mb-8 sm:mb-16 px-4 sm:px-0"
+        className="mb-8 px-4 sm:px-0"
       >
         <p className={`${styles.sectionSubText} text-center`}>
           My Pricing
@@ -187,7 +187,7 @@ const PriceRange = () => {
         </h2>
       </motion.div>
 
-      <div className="flex flex-col gap-10 sm:gap-20">
+      <div className="flex flex-col gap-8">
         {Object.values(services).map((service, index) => (
           <ServiceSection key={index} {...service} />
         ))}
