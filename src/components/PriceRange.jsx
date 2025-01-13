@@ -40,13 +40,13 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
 };
 
 const ServiceSection = ({ title, plans }) => (
-  <div className="relative z-10 mt-8 sm:mt-20">
+  <div className="relative z-10 mt-8 sm:mt-5">
     <div className="bg-tertiary/30 backdrop-blur-sm py-3 sm:py-4 px-4 mb-6 sm:mb-8 rounded-lg mx-4">
       <h3 className="text-white font-bold text-[20px] sm:text-[28px] text-center">
         {title}
       </h3>
     </div>
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 px-4 sm:px-0">
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-4 px-4 sm:px-0">
       {plans.map((plan, index) => (
         <PriceCard key={index} {...plan} />
       ))}
