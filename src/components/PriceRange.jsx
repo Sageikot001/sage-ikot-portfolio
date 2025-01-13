@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion'
-import { styles } from '../styles'
-import { SectionWrapper } from '../hoc'
-import { slideIn } from '../utils/motion'
+import { motion } from 'framer-motion';
+import { styles } from '../styles';
+import { SectionWrapper } from '../hoc';
+import { slideIn } from '../utils/motion';
 
 const PriceCard = ({ title, price, features, recommended, contactSales }) => {
   const handleContactClick = () => {
@@ -12,12 +12,12 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
   return (
     <motion.div
       variants={slideIn('up', 'tween', 0.2, 1)}
-      className={`bg-black-100 p-6 sm:p-8 rounded-2xl w-[300px] sm:w-[360px] ${
+      className={`bg-black-100 p-6 sm:p-8 rounded-2xl w-full max-w-[360px] ${
         recommended ? 'border-2 border-white' : ''
       }`}
     >
       <h3 className="text-white font-bold text-[20px] sm:text-[24px]">{title}</h3>
-      <p className="text-secondary text-[36px] sm:text-[48px] font-bold mt-2">
+      <p className="text-secondary text-[28px] sm:text-[36px] font-bold mt-2">
         {contactSales ? 'Custom' : `$${price}`}
       </p>
       <ul className="mt-4 sm:mt-5 space-y-2">
@@ -36,23 +36,23 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
         </button>
       )}
     </motion.div>
-  )
-}
+  );
+};
 
 const ServiceSection = ({ title, plans }) => (
-  <div className="w-full">
-    <div className="bg-tertiary/30 backdrop-blur-sm py-3 px-4 rounded-lg mb-4">
+  <div className="relative z-10 mt-8 sm:mt-20">
+    <div className="bg-tertiary/30 backdrop-blur-sm py-3 sm:py-4 px-4 mb-6 sm:mb-8 rounded-lg mx-4">
       <h3 className="text-white font-bold text-[20px] sm:text-[28px] text-center">
         {title}
       </h3>
     </div>
-    <div className="mt-4 flex flex-col items-center gap-4">
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 px-4 sm:px-0">
       {plans.map((plan, index) => (
         <PriceCard key={index} {...plan} />
       ))}
     </div>
   </div>
-)
+);
 
 const PriceRange = () => {
   const services = {
@@ -171,13 +171,13 @@ const PriceRange = () => {
         }
       ]
     }
-  }
+  };
 
   return (
-    <div className="pb-[120px] sm:pb-0">
+    <div className="relative z-0 pb-[120px] sm:pb-0">
       <motion.div 
         variants={slideIn('down', 'tween', 0.2, 1)}
-        className="mb-8 px-4 sm:px-0"
+        className="relative z-10 mb-8 sm:mb-16 px-4 sm:px-0"
       >
         <p className={`${styles.sectionSubText} text-center`}>
           My Pricing
@@ -187,13 +187,13 @@ const PriceRange = () => {
         </h2>
       </motion.div>
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-12 sm:gap-20">
         {Object.values(services).map((service, index) => (
           <ServiceSection key={index} {...service} />
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SectionWrapper(PriceRange, "pricing") 
+export default SectionWrapper(PriceRange, "pricing");
