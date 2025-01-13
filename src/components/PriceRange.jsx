@@ -40,8 +40,12 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
 };
 
 const ServiceSection = ({ title, plans }) => (
-  <div className="mt-8 sm:mt-12">
-    <h3 className="text-white font-bold text-[24px] sm:text-[28px] mb-6 sm:mb-10 text-center">{title}</h3>
+  <div className="relative z-10 mt-8 sm:mt-20">
+    <div className="bg-tertiary/30 backdrop-blur-sm py-3 sm:py-4 px-4 mb-6 sm:mb-8 rounded-lg mx-4 sm:mx-0">
+      <h3 className="text-white font-bold text-[20px] sm:text-[28px] text-center">
+        {title}
+      </h3>
+    </div>
     <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
       {plans.map((plan, index) => (
         <PriceCard key={index} {...plan} />
@@ -170,10 +174,10 @@ const PriceRange = () => {
   }
 
   return (
-    <div className="pb-14 sm:pb-0">
+    <div className="relative z-0 pb-[120px] sm:pb-0">
       <motion.div 
         variants={slideIn('down', 'tween', 0.2, 1)}
-        className="mb-8 sm:mb-16"
+        className="relative z-10 mb-8 sm:mb-16 px-4 sm:px-0"
       >
         <p className={`${styles.sectionSubText} text-center`}>
           My Pricing
@@ -183,7 +187,7 @@ const PriceRange = () => {
         </h2>
       </motion.div>
 
-      <div className="flex flex-col gap-16 sm:gap-20">
+      <div className="flex flex-col gap-12 sm:gap-20">
         {Object.values(services).map((service, index) => (
           <ServiceSection key={index} {...service} />
         ))}
