@@ -12,17 +12,19 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
   return (
     <motion.div
       variants={slideIn('up', 'tween', 0.2, 1)}
-      className={`bg-black-100 p-6 sm:p-6 rounded-2xl w-full max-w-[360px] ${
+      className={`bg-black-100 p-3 xs:p-4 sm:p-6 rounded-2xl w-[300px] xs:w-[340px] sm:w-[360px] ${
         recommended ? 'border-2 border-white' : ''
       }`}
     >
-      <h3 className="text-white font-bold text-[20px] sm:text-[24px]">{title}</h3>
-      <p className="text-secondary text-[28px] sm:text-[36px] font-bold mt-2">
+      <h3 className="text-white font-bold text-[16px] xs:text-[18px] sm:text-[24px]">
+        {title}
+      </h3>
+      <p className="text-secondary text-[20px] xs:text-[24px] sm:text-[36px] font-bold mt-1 xs:mt-2">
         {contactSales ? 'Custom' : `$${price}`}
       </p>
-      <ul className="mt-4 sm:mt-5 space-y-2">
+      <ul className="mt-2 xs:mt-3 sm:mt-4 space-y-1 xs:space-y-2">
         {features.map((feature, index) => (
-          <li key={index} className="text-white-100 text-[14px] sm:text-[16px]">
+          <li key={index} className="text-white-100 text-[12px] xs:text-[13px] sm:text-[16px]">
             • {feature}
           </li>
         ))}
@@ -30,7 +32,7 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
       {contactSales && (
         <button 
           onClick={handleContactClick}
-          className="mt-4 bg-tertiary py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl"
+          className="mt-3 xs:mt-4 bg-tertiary py-2 px-4 xs:px-6 sm:px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl text-[12px] xs:text-[14px] sm:text-[16px]"
         >
           Contact Sales
         </button>
@@ -40,22 +42,19 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
 };
 
 const ServiceSection = ({ title, plans }) => (
-    // Main container div that wraps both title and plans
-    <div className="relative z-10 mt-8 sm:mt-2 mb-12 sm:mb-16">
-      {/* Title container */}
-      <div className="bg-tertiary/30 backdrop-blur-sm py-3 sm:py-1 px-4 mb-4 sm:mb-8 rounded-lg mx-4">
-        <h3 className="text-white font-bold text-[20px] sm:text-[28px] text-center">
-          {title}
-        </h3>
-      </div>
-      {/* Plans container */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-4 px-4 sm:px-0">
-        {plans.map((plan, index) => (
-          <PriceCard key={index} {...plan} />
-        ))}
-      </div>
+  <div className="relative z-10 w-full">
+    <div className="bg-tertiary/30 backdrop-blur-sm py-2 px-2 mb-3 xs:mb-4 sm:mb-6 rounded-lg mx-auto w-[300px] xs:w-[340px] sm:w-[360px]">
+      <h3 className="text-white font-bold text-[16px] xs:text-[18px] sm:text-[28px] text-center">
+        {title}
+      </h3>
     </div>
-  );
+    <div className="flex flex-col items-center gap-3 xs:gap-4 sm:gap-6">
+      {plans.map((plan, index) => (
+        <PriceCard key={index} {...plan} />
+      ))}
+    </div>
+  </div>
+);
   
 
 const PriceRange = () => {
@@ -178,20 +177,20 @@ const PriceRange = () => {
   };
 
   return (
-    <div className="relative z-0 pb-[120px] sm:pb-0">
+    <div className="relative z-0 min-h-screen px-2 pb-6 xs:pb-8 sm:pb-0">
       <motion.div 
         variants={slideIn('down', 'tween', 0.2, 1)}
-        className="relative z-10 mb-8 sm:mb-8 px-4 sm:px-0"
+        className="relative z-10 mb-3 xs:mb-4 sm:mb-8"
       >
-        <p className={`${styles.sectionSubText} text-center`}>
+        <p className={`${styles.sectionSubText} text-center text-[14px] xs:text-[16px]`}>
           My Pricing
         </p>
-        <h2 className={`${styles.sectionHeadText} text-center`}>
+        <h2 className={`${styles.sectionHeadText} text-center text-[24px] xs:text-[28px] sm:text-[32px]`}>
           Services & Rates.
         </h2>
       </motion.div>
 
-      <div className="flex flex-col gap-12 sm:gap-4">
+      <div className="flex flex-col gap-4 xs:gap-6 sm:gap-8">
         {Object.values(services).map((service, index) => (
           <ServiceSection key={index} {...service} />
         ))}
