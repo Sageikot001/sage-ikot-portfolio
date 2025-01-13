@@ -62,8 +62,8 @@ const Contact = () => {
   return <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
     <motion.div variants={slideIn('left', "tween", 0.2, 1 )}
     className="flex-[0.75] bg-black-100 p-8 rounded-2xl">
-      <p className={styles.heroSubText}>Get in Touch</p>
-      <h3 className={styles.heroHeadText}>Contact.</h3>
+      <p className={styles.sectionSubText}>Get in touch</p>
+      <h3 className={styles.sectionHeadText}>Contact.</h3>
 
       <form 
       ref={formRef}
@@ -114,12 +114,46 @@ const Contact = () => {
           {loading ? 'Sending...' : 'Send'}
         </button>
 
+        <div className=" flex justify-center gap-6">
+      <a
+        href="https://github.com/Sageikot001"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+      >
+        <img src="https://img.icons8.com/3d-fluency/100/github.png" alt="github" className="w-1/2 h-1/2 object-contain" />
+      </a>
+      <a
+        href="https://www.linkedin.com/in/nsikakabasi-ikot-bb7434168/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+      >
+        <img src="https://img.icons8.com/3d-fluency/100/linkedin--v2.png" alt="linkedin" className="w-1/2 h-1/2 object-contain" />
+      </a>
+      <a
+        href="https://x.com/Ikotnsikak"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+      >
+        <img src="https://img.icons8.com/material-outlined/100/twitterx--v2.png" alt="twitter" className="w-1/2 h-1/2 object-contain" />
+      </a>
+      <a
+        href="https://www.upwork.com/freelancers/~01f45ba51c73c37876?s=1110580755057594368"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+      >
+        <img src="https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/100/external-upwork-a-global-freelancing-platform-where-professionals-connect-and-collaborate-remotely-logo-shadow-tal-revivo.png" alt="upwork" className="w-1/2 h-1/2 object-contain" />
+      </a>
+    </div>
       </form>
       
     </motion.div>
 
     <motion.div variants={slideIn('right', "tween", 0.2, 1 )}
-    className="xl:flex-1 xl:h-auto md:h-[550px] h-[350px] "
+    className="xl:flex-1 xl:h-[750px] md:h-[550px] h-[350px] "
     >
       <EarthCanvas />
     </motion.div>

@@ -1,11 +1,13 @@
 import React from 'react'
 import {Tilt} from 'react-tilt';
 import { motion } from 'framer-motion';
+import { Document, Page } from 'react-pdf'
 
 import { styles } from '../styles';
 import { services } from '../constants';
 import { fadeIn, textVariant } from '../utils/motion';
 import { SectionWrapper } from '../hoc'
+import cv from '../assets/cv.pdf'
 
 const ServiceCard = ({ index, title, icon}) => {
   return (
@@ -48,6 +50,23 @@ const About = () => {
     <div className=" mt-20 flex flex-1 flex-wrap gap-10">
       {services.map((services, index) => (<ServiceCard key={services.title} index={index} {...services} />
       ))}
+    </div>
+
+    <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-10">
+      <a
+        href={cv}
+        download="YourName_CV.pdf"
+        className="bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary"
+      >
+        Download CV
+      </a>
+      
+      <button
+        onClick={() => window.open(cv, '_blank')}
+        className="bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary"
+      >
+        View CV
+      </button>
     </div>
     </>
   )
