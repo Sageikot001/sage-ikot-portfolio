@@ -40,19 +40,23 @@ const PriceCard = ({ title, price, features, recommended, contactSales }) => {
 };
 
 const ServiceSection = ({ title, plans }) => (
-  <div className="z-10 mt-8 sm:mt-2">
-    <div className="bg-tertiary/30 backdrop-blur-sm py-3 sm:py-1 px-4 mb-6 sm:mb-8 rounded-lg mx-4">
-      <h3 className="text-white font-bold text-[20px] sm:text-[28px] text-center">
-        {title}
-      </h3>
+    // Main container div that wraps both title and plans
+    <div className="relative z-10 mt-8 sm:mt-2 mb-12 sm:mb-16">
+      {/* Title container */}
+      <div className="bg-tertiary/30 backdrop-blur-sm py-3 sm:py-1 px-4 mb-4 sm:mb-8 rounded-lg mx-4">
+        <h3 className="text-white font-bold text-[20px] sm:text-[28px] text-center">
+          {title}
+        </h3>
+      </div>
+      {/* Plans container */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-4 px-4 sm:px-0">
+        {plans.map((plan, index) => (
+          <PriceCard key={index} {...plan} />
+        ))}
+      </div>
     </div>
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-4 px-4 sm:px-0">
-      {plans.map((plan, index) => (
-        <PriceCard key={index} {...plan} />
-      ))}
-    </div>
-  </div>
-);
+  );
+  
 
 const PriceRange = () => {
   const services = {
