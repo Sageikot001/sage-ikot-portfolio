@@ -15,8 +15,8 @@ const Home = () => (
     <Tech/>
     <Works/>
     <Feedbacks/>
-    <div className='relative z-0'>
       <PriceRange />
+    <div className='relative z-0'>
       <Contact/>
       <StarsCanvas/>
     </div>
