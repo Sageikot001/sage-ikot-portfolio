@@ -16,6 +16,8 @@ const tagColors = [
   'yellow-text-gradient'
 ];
 
+const MAX_DESCRIPTION_LENGTH = 120;
+
 const ProjectCard = ({
   index,
   name,
@@ -26,14 +28,25 @@ const ProjectCard = ({
   live_demo_link,
 }) => {
   const [imageError, setImageError] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const isLongDescription = description?.length > MAX_DESCRIPTION_LENGTH;
+  const displayDescription = isExpanded || !isLongDescription
+    ? description
+    : `${description.slice(0, MAX_DESCRIPTION_LENGTH)}...`;
+
+  const handleCardClick = (e) => {
+    if (e.target.closest('.expand-btn') || e.target.closest('.github-btn')) return;
+    if (live_demo_link) window.open(live_demo_link, "_blank");
+  };
 
   return (
-    <motion.div 
+    <motion.div
       variants={fadeIn("up", "spring", index * 0.5, 0.75)}
       initial="show"
       animate="show"
       viewport={{ once: true }}
-      onClick={() => live_demo_link && window.open(live_demo_link, "_blank")}
+      onClick={handleCardClick}
     >
       <Tilt
         options={{
@@ -41,9 +54,9 @@ const ProjectCard = ({
           scale: 1,
           speed: 450,
         }}
-        className="bg-tertiary p-5 rounded-2xl sm:w-[350px] w-full"
+        className="bg-tertiary p-5 rounded-2xl sm:w-[350px] w-full h-[480px] flex flex-col"
       >
-        <div className="relative w-full h-[230px]">
+        <div className="relative w-full h-[230px] flex-shrink-0">
           {!imageError ? (
             <img
               src={image}
@@ -59,8 +72,11 @@ const ProjectCard = ({
 
           <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
             <div
-              onClick={() => window.open(source_code_link, "_blank")}
-              className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(source_code_link, "_blank");
+              }}
+              className="github-btn black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
             >
               <img
                 src={github}
@@ -71,9 +87,22 @@ const ProjectCard = ({
           </div>
         </div>
 
-        <div className="mt-5">
+        <div className="mt-5 flex-1 flex flex-col">
           <h3 className="text-white font-bold text-[24px]">{name}</h3>
-          <p className="mt-2 text-secondary text-[14px]">{description}</p>
+          <p className="mt-2 text-secondary text-[14px] flex-1">
+            {displayDescription}
+            {isLongDescription && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsExpanded(!isExpanded);
+                }}
+                className="expand-btn text-white ml-1 hover:underline"
+              >
+                {isExpanded ? 'less' : 'more'}
+              </button>
+            )}
+          </p>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
