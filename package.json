@@ -16,6 +16,7 @@
     "@emailjs/browser": "^3.11.0",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
+    "@vercel/speed-insights": "^2.0.0",
     "appwrite": "^16.0.2",
     "framer-motion": "^10.16.16",
     "maath": "^0.10.7",

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, StarsCanvas } from './components';
 import AddProject from './pages/AddProject';
 import PriceRange from './components/PriceRange';
@@ -26,6 +27,7 @@ const Home = () => (
 function App() {
   return (
     <Router>
+      <SpeedInsights />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/add-project" element={<AddProject />} />
