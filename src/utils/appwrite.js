@@ -9,6 +9,7 @@ const storage = new Storage(client);
 
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
+const EXPERIENCES_COLLECTION_ID = import.meta.env.VITE_APPWRITE_EXPERIENCES_COLLECTION_ID;
 const BUCKET_ID = import.meta.env.VITE_APPWRITE_BUCKET_ID;
 
 export const projectsDB = {
@@ -190,6 +191,172 @@ export const projectsDB = {
       );
       await Promise.all(updates);
       window.dispatchEvent(new CustomEvent('projectsUpdated'));
+      return true;
+    } catch (error) {
+      console.error('Error updating positions:', error);
+      throw error;
+    }
+  }
+};
+
+export const experiencesDB = {
+  async add(experience) {
+    try {
+      let iconUrl = '';
+      if (experience.icon instanceof File) {
+        const fileUpload = await storage.createFile(
+          BUCKET_ID,
+          ID.unique(),
+          experience.icon
+        );
+        iconUrl = storage.getFileView(BUCKET_ID, fileUpload.$id);
+      }
+
+      const formattedExperience = {
+        title: experience.title,
+        companyName: experience.companyName,
+        icon: iconUrl || experience.icon || '',
+        iconBg: experience.iconBg || '#E6DEDD',
+        date: experience.date,
+        points: Array.isArray(experience.points)
+          ? experience.points.filter(p => p.trim() !== '')
+          : [],
+        position: experience.position || 0
+      };
+
+      const response = await databases.createDocument(
+        DATABASE_ID,
+        EXPERIENCES_COLLECTION_ID,
+        ID.unique(),
+        formattedExperience
+      );
+
+      window.dispatchEvent(new CustomEvent('experiencesUpdated'));
+      return response;
+    } catch (error) {
+      console.error('Error adding experience:', error);
+      throw error;
+    }
+  },
+
+  async getAll() {
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        EXPERIENCES_COLLECTION_ID,
+        [Query.orderAsc('position')]
+      );
+
+      return response.documents.map(doc => {
+        let iconUrl = doc.icon;
+
+        if (iconUrl && !iconUrl.startsWith('http')) {
+          try {
+            iconUrl = storage.getFileView(BUCKET_ID, iconUrl);
+          } catch (error) {
+            console.warn('Error processing icon:', error);
+          }
+        }
+
+        return {
+          ...doc,
+          icon: iconUrl,
+          company_name: doc.companyName
+        };
+      });
+    } catch (error) {
+      console.error('Error getting experiences:', error);
+      return [];
+    }
+  },
+
+  async delete(experienceId) {
+    try {
+      const experience = await databases.getDocument(
+        DATABASE_ID,
+        EXPERIENCES_COLLECTION_ID,
+        experienceId
+      );
+
+      if (experience.icon && experience.icon.includes(BUCKET_ID)) {
+        try {
+          const fileId = experience.icon.split('/').pop();
+          await storage.deleteFile(BUCKET_ID, fileId);
+        } catch (e) {
+          console.warn('Failed to delete icon:', e);
+        }
+      }
+
+      await databases.deleteDocument(
+        DATABASE_ID,
+        EXPERIENCES_COLLECTION_ID,
+        experienceId
+      );
+
+      window.dispatchEvent(new CustomEvent('experiencesUpdated'));
+      return true;
+    } catch (error) {
+      console.error('Error deleting experience:', error);
+      throw error;
+    }
+  },
+
+  async update(experienceId, updatedExperience) {
+    try {
+      if (!experienceId) {
+        throw new Error('Experience ID is required for update');
+      }
+
+      const { $id, $createdAt, $updatedAt, $permissions, $databaseId, $collectionId, ...cleanExperience } = updatedExperience;
+
+      let iconUrl = cleanExperience.icon;
+      if (cleanExperience.icon instanceof File) {
+        const fileUpload = await storage.createFile(
+          BUCKET_ID,
+          ID.unique(),
+          cleanExperience.icon
+        );
+        iconUrl = storage.getFileView(BUCKET_ID, fileUpload.$id);
+      }
+
+      const formattedExperience = {
+        title: cleanExperience.title,
+        companyName: cleanExperience.companyName || cleanExperience.company_name,
+        icon: iconUrl || '',
+        iconBg: cleanExperience.iconBg || '#E6DEDD',
+        date: cleanExperience.date,
+        points: Array.isArray(cleanExperience.points)
+          ? cleanExperience.points.filter(p => p.trim() !== '')
+          : []
+      };
+
+      const response = await databases.updateDocument(
+        DATABASE_ID,
+        EXPERIENCES_COLLECTION_ID,
+        experienceId,
+        formattedExperience
+      );
+
+      window.dispatchEvent(new CustomEvent('experiencesUpdated'));
+      return response;
+    } catch (error) {
+      console.error('Error updating experience:', error);
+      throw error;
+    }
+  },
+
+  async updatePositions(experiences) {
+    try {
+      const updates = experiences.map((exp, index) =>
+        databases.updateDocument(
+          DATABASE_ID,
+          EXPERIENCES_COLLECTION_ID,
+          exp.$id,
+          { position: index }
+        )
+      );
+      await Promise.all(updates);
+      window.dispatchEvent(new CustomEvent('experiencesUpdated'));
       return true;
     } catch (error) {
       console.error('Error updating positions:', error);

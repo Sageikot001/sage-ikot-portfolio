@@ -1,10 +1,12 @@
+import { useState, useEffect } from "react";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import { motion } from "framer-motion"
 
 import 'react-vertical-timeline-component/style.min.css';
 
 import { styles } from "../styles";
-import { experiences } from "../constants";
+import { experiences as defaultExperiences } from "../constants";
+import { experiencesDB } from "../utils/appwrite";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
 
@@ -45,6 +47,32 @@ const ExperienceCard = ({ experience }) => (
 )
 
 const Experience = () => {
+  const [allExperiences, setAllExperiences] = useState(defaultExperiences)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const loadExperiences = async () => {
+      try {
+        const savedExperiences = await experiencesDB.getAll()
+        setAllExperiences([...savedExperiences, ...defaultExperiences])
+      } catch (error) {
+        console.error('Error loading experiences:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadExperiences()
+
+    const handleUpdate = () => loadExperiences()
+    window.addEventListener('experiencesUpdated', handleUpdate)
+    return () => window.removeEventListener('experiencesUpdated', handleUpdate)
+  }, [])
+
+  if (isLoading) {
+    return <div className="text-white">Loading experiences...</div>
+  }
+
   return (
     <>
     <motion.div variants={textVariant()}>
@@ -53,8 +81,8 @@ const Experience = () => {
     </motion.div>
     <div className="nt-20 flex flex-col">
       <VerticalTimeline>
-        {experiences.map((experience, index) => (
-          <ExperienceCard key={index} experience={experience}/>
+        {allExperiences.map((experience, index) => (
+          <ExperienceCard key={experience.$id || index} experience={experience}/>
         ))}
       </VerticalTimeline>
     </div>
