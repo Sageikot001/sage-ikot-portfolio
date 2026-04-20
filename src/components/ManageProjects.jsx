@@ -1,11 +1,35 @@
 import { useState, useEffect } from 'react'
 import { Tilt } from "react-tilt"
 import { motion } from 'framer-motion'
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, rectSortingStrategy } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { github } from "../assets"
 import { fadeIn, textVariant } from '../utils/motion'
 import { projectsDB } from '../utils/appwrite'
 
-const ProjectCard = ({ project, onEdit, onDelete }) => {
+const SortableProjectCard = ({ project, onEdit, onDelete }) => {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: project.$id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  }
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <ProjectCard
+        project={project}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        dragHandleProps={{ ...attributes, ...listeners }}
+      />
+    </div>
+  )
+}
+
+const ProjectCard = ({ project, onEdit, onDelete, dragHandleProps }) => {
   const { index, name, description, tags, image, source_code_link, live_demo_link } = project
   const [imageError, setImageError] = useState(false)
 
@@ -100,6 +124,13 @@ const ProjectCard = ({ project, onEdit, onDelete }) => {
 
         <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
+            {...dragHandleProps}
+            className="bg-gray-500 text-white p-2 rounded-full hover:bg-gray-600 transition-colors cursor-grab active:cursor-grabbing"
+            title="Drag to reorder"
+          >
+            ⋮⋮
+          </button>
+          <button
             onClick={() => onEdit(project)}
             className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
           >
@@ -130,6 +161,11 @@ export default function ManageProjects() {
   const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [editingProject, setEditingProject] = useState(null)
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
 
   useEffect(() => {
     loadProjects()
@@ -179,6 +215,22 @@ export default function ManageProjects() {
     } catch (error) {
       console.error('Error updating project:', error)
       alert('Failed to update project')
+    }
+  }
+
+  const handleDragEnd = async (event) => {
+    const { active, over } = event
+    if (active.id !== over?.id) {
+      const oldIndex = projects.findIndex(p => p.$id === active.id)
+      const newIndex = projects.findIndex(p => p.$id === over.id)
+      const newOrder = arrayMove(projects, oldIndex, newIndex)
+      setProjects(newOrder)
+      try {
+        await projectsDB.updatePositions(newOrder)
+      } catch (error) {
+        console.error('Error saving order:', error)
+        loadProjects()
+      }
     }
   }
 
@@ -348,16 +400,20 @@ export default function ManageProjects() {
           </div>
         </form>
       ) : (
-        <div className="mt-20 flex flex-wrap gap-7">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.id || `project-${index}`}
-              project={{ ...project, index }}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={projects.map(p => p.$id)} strategy={rectSortingStrategy}>
+            <div className="mt-20 flex flex-wrap gap-7">
+              {projects.map((project, index) => (
+                <SortableProjectCard
+                  key={project.$id || `project-${index}`}
+                  project={{ ...project, index }}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
     </div>
   )

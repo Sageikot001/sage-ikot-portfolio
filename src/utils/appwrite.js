@@ -1,4 +1,4 @@
-import { Client, Databases, Storage, ID } from 'appwrite';
+import { Client, Databases, Storage, ID, Query } from 'appwrite';
 
 const client = new Client()
     .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT)
@@ -53,9 +53,10 @@ export const projectsDB = {
     try {
       const response = await databases.listDocuments(
         DATABASE_ID,
-        COLLECTION_ID
+        COLLECTION_ID,
+        [Query.orderAsc('position')]
       );
-      
+
       return response.documents.map(doc => {
         let imageUrl = doc.image;
         
@@ -173,6 +174,25 @@ export const projectsDB = {
       return response;
     } catch (error) {
       console.error('Error updating project:', error);
+      throw error;
+    }
+  },
+
+  async updatePositions(projects) {
+    try {
+      const updates = projects.map((project, index) =>
+        databases.updateDocument(
+          DATABASE_ID,
+          COLLECTION_ID,
+          project.$id,
+          { position: index }
+        )
+      );
+      await Promise.all(updates);
+      window.dispatchEvent(new CustomEvent('projectsUpdated'));
+      return true;
+    } catch (error) {
+      console.error('Error updating positions:', error);
       throw error;
     }
   }
